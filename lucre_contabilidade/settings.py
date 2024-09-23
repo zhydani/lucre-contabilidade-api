@@ -23,7 +23,7 @@ SECRET_KEY = 'django-insecure-71p+jg-ul42bsk#zbncjodxn@+4oguw%0wfs_@4f+)*n1iieel
 DEBUG = False
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Configurações de arquivos de mídia
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

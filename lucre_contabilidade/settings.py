@@ -8,8 +8,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-
 DATABASES = {
     'default': dj_database_url.config(
         conn_max_age=600,  # Mantém a conexão aberta por mais tempo
@@ -111,6 +109,7 @@ WSGI_APPLICATION = 'lucre_contabilidade.wsgi.application'
 #     }
 # }
 
+DEFAULT_CHARSET = 'utf-8'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

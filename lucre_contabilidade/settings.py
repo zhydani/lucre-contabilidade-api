@@ -63,7 +63,7 @@ DATABASES = {
 SECRET_KEY = 'django-insecure-71p+jg-ul42bsk#zbncjodxn@+4oguw%0wfs_@4f+)*n1iieel'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']

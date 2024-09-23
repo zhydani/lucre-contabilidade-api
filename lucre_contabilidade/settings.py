@@ -6,33 +6,21 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'collected-media'
+# AWS S3 Settings
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', default='us-east-1')
 
-S3_ENABLED = config('S3_ENABLED', cast=bool, default=False)
-LOCAL_SERVE_MEDIA_FILES = config('LOCAL_SERVE_MEDIA_FILES', cast=bool, default=not S3_ENABLED)
+# Configuração do backend de armazenamento
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
-if S3_ENABLED:
-    AWS_ACCESS_KEY_ID = config('BUCKETEER_AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = config('BUCKETEER_AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = config('BUCKETEER_BUCKET_NAME')
-    AWS_S3_REGION_NAME = config('BUCKETEER_AWS_REGION')
-    AWS_DEFAULT_ACL = None
-    AWS_S3_SIGNATURE_VERSION = config('S3_SIGNATURE_VERSION', default='s3v4')
-    AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-
-if not LOCAL_SERVE_MEDIA_FILES:
-    PUBLIC_MEDIA_LOCATION = 'media/public'
-    MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
-    DEFAULT_FILE_STORAGE = 'lucre_contabilidade.utils.storage_backends.PublicMediaStorage'
-
-    PRIVATE_MEDIA_LOCATION = 'media/private'
-    PRIVATE_FILE_STORAGE = 'lucre_contabilidade.utils.storage_backends.PrivateMediaStorage'
-
-
-if not LOCAL_SERVE_MEDIA_FILES and not S3_ENABLED:
-    raise ValueError('S3_ENABLED must be true if media files are not served locally')
+# Caminhos de mídia
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+MEDIA_ROOT = 'media/'
 
 
 DATABASES = {
@@ -168,16 +156,5 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
-AWS_ACCESS_KEY_ID = config('BUCKETEER_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = config('BUCKETEER_AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = config('BUCKETEER_BUCKET_NAME')
-AWS_S3_REGION_NAME = config('BUCKETEER_AWS_REGION')
-AWS_DEFAULT_ACL = None
-AWS_S3_SIGNATURE_VERSION = config('S3_SIGNATURE_VERSION', default='s3v4')
-AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

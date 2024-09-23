@@ -1,10 +1,6 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import NoticiaViewSet
-
-router = DefaultRouter()
-router.register(r'noticias', NoticiaViewSet)
+from django.urls import path
+from .views import NoticiaListView
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('noticias/', NoticiaListView.as_view(), name='noticia-list'),
 ]
